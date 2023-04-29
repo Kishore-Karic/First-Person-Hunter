@@ -6,9 +6,10 @@ namespace FPHunter.Player
     [Serializable]
     public class PlayerModelData
     {
-        [field: SerializeField] public float MovementSpeed { get; private set; }
+        [field: SerializeField] public float CrouchMovementSpeed { get; private set; }
+        [field: SerializeField] public float NormalMovementSpeed { get; private set; }
         [field: SerializeField] public float RotationSpeed { get; private set; }
-        [field: SerializeField] public float Zero { get; private set; }
+        [field: SerializeField] public int Zero { get; private set; }
         [field: SerializeField] public float CameraFirstMaxAngle { get; private set; }
         [field: SerializeField] public float CameraSecondMaxAngle { get; private set; }
         [field: SerializeField] public float CameraFirstMinAngle { get; private set; }

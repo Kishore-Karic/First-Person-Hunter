@@ -1,10 +1,13 @@
+using UnityEngine;
+
 namespace FPHunter.Player
 {
     public class PlayerModel
     {
-        public float MovementSpeed { get; private set; }
+        public float CrouchMovementSpeed { get; private set; }
+        public float NormalMovementSpeed { get; private set; }
         public float RotationSpeed { get; private set; }
-        public float Zero { get; private set; }
+        public int Zero { get; private set; }
         public float FirstMaxAngle { get; private set; }
         public float SecondMaxAngle { get; private set; }
         public float FirstMinAngle { get; private set; }
@@ -13,7 +16,8 @@ namespace FPHunter.Player
 
         public PlayerModel(PlayerModelData playerModelData)
         {
-            MovementSpeed = playerModelData.MovementSpeed;
+            CrouchMovementSpeed = playerModelData.CrouchMovementSpeed;
+            NormalMovementSpeed = playerModelData.NormalMovementSpeed;
             RotationSpeed = playerModelData.RotationSpeed;
             Zero = playerModelData.Zero;
             FirstMaxAngle = playerModelData.CameraFirstMaxAngle;
