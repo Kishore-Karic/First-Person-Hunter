@@ -10,12 +10,16 @@ namespace FPHunter.Player
         [field: SerializeField] public Camera FirstPersonCamera { get; private set; }
         [field: SerializeField] public Transform RightHandGunSlot { get; private set; }
         [field: SerializeField] public Transform LeftHandGunSlot { get; private set; }
+        [field: SerializeField] public Transform Dot { get; private set; }
 
         private PlayerController playerController;
         private float movement;
         private float horizontalRotation;
         private float verticalRotation;
         private float zero;
+        private float nextShootTime;
+        private float currentShootTime;
+        private bool isAiming;
         
         public bool IsCrouching { get; private set; }
 
@@ -57,17 +61,19 @@ namespace FPHunter.Player
 
             if (Input.GetKey(KeyCode.Mouse1))
             {
-                playerController.RightHandWeaponView.SetCrosshair(true);
-                Animator.SetBool("Aiming", true);
+                playerController.AimWeapon();
+                isAiming = true;
             }
             else
             {
-                playerController.RightHandWeaponView.SetCrosshair(false);
-                Animator.SetBool("Aiming", false);
+                playerController.PutDownWeapon();
+                isAiming = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            currentShootTime += Time.deltaTime;
+            if (isAiming && currentShootTime > nextShootTime && Input.GetKeyDown(KeyCode.Mouse0))
             {
+                currentShootTime = zero;
                 Animator.SetTrigger("Attack");
             }
         }
@@ -87,6 +93,11 @@ namespace FPHunter.Player
         public void DestroyThis(GameObject gameObject)
         {
             Destroy(gameObject);
+        }
+
+        public void SetNextShootTime(float _time)
+        {
+            nextShootTime = _time;
         }
     }
 }

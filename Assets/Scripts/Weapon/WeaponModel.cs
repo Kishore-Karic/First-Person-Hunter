@@ -9,6 +9,8 @@ namespace FPHunter.Weapon
         public float WeaponWeight { get; private set; }
         public ScopeType ScopeType { get; private set; }
         public Vector3 LocalRotation { get; private set; }
+        public float NextShootTime { get; private set; }
+        public int Zero { get; private set; }
 
         public WeaponModel(WeaponScriptableObject weaponScriptableObject)
         {
@@ -16,6 +18,8 @@ namespace FPHunter.Weapon
             WeaponWeight = weaponScriptableObject.WeaponWeight;
             ScopeType = weaponScriptableObject.ScopeType;
             LocalRotation = weaponScriptableObject.LocalRotation;
+            NextShootTime = weaponScriptableObject.NextShootTime;
+            Zero = weaponScriptableObject.Zero;
         }
     }
 }

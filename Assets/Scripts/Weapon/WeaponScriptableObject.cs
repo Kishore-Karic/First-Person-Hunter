@@ -10,5 +10,7 @@ namespace FPHunter.Weapon
         public float WeaponWeight;
         public ScopeType ScopeType;
         public Vector3 LocalRotation;
+        public float NextShootTime;
+        public int Zero;
     }
 }

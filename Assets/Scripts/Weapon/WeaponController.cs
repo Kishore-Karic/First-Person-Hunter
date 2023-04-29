@@ -9,6 +9,7 @@ namespace FPHunter.Weapon
         private WeaponView weaponView;
         private WeaponService weaponService;
         private GameObject crosshair;
+        private Transform crosshairCenterDot;
 
         public WeaponController(WeaponModel _weaponModel, WeaponService _weaponService, WeaponView _weaponView)
         {
@@ -18,6 +19,7 @@ namespace FPHunter.Weapon
             weaponView.SetWeaponController(this);
 
             crosshair = GameObject.Instantiate(weaponService.GetCrosshair((int)GetWeaponType()));
+            crosshairCenterDot = crosshair.transform.GetChild(weaponModel.Zero);
             crosshair.SetActive(false);
         }
 
@@ -39,6 +41,16 @@ namespace FPHunter.Weapon
         public void SetCrosshair(bool _value)
         {
             crosshair.SetActive(_value);
+        }
+
+        public Transform GetCrosshairDotObject()
+        {
+            return crosshairCenterDot;
+        }
+
+        public float GetNextShootTime()
+        {
+            return weaponModel.NextShootTime;
         }
     }
 }

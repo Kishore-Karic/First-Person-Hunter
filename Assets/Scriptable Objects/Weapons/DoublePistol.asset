@@ -16,3 +16,5 @@ MonoBehaviour:
   WeaponWeight: 5
   ScopeType: 0
   LocalRotation: {x: 90, y: 0, z: 0}
+  NextShootTime: 7
+  Zero: 0

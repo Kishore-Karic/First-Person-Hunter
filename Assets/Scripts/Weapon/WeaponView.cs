@@ -26,5 +26,15 @@ namespace FPHunter.Weapon
         {
             weaponController.SetCrosshair(_value);
         }
+
+        public Transform GetCrosshairDotObject()
+        {
+            return weaponController.GetCrosshairDotObject();
+        }
+
+        public float GetNextShootTime()
+        {
+            return weaponController.GetNextShootTime();
+        }
     }
 }

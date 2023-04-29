@@ -17,6 +17,7 @@ namespace FPHunter.Player
         private Rigidbody rigidBody;
         private Camera firstPersonCamera;
         private bool isDoubleWeaponAvailable;
+        private Transform crosshairDotTransform;
 
         public PlayerController(PlayerModel _playerModel, PlayerService _playerService, PlayerView _playerPrefab, Transform transform, List<AnimatorController> animatorsList)
         {
@@ -43,6 +44,8 @@ namespace FPHunter.Player
             }
 
             PlaceGunInHand();
+            crosshairDotTransform = playerView.Dot;
+            playerView.SetNextShootTime(RightHandWeaponView.GetNextShootTime());
         }
 
         private void PlaceGunInHand()
@@ -120,6 +123,35 @@ namespace FPHunter.Player
         public void PlayerIsCrouching()
         {
             playerView.Animator.SetBool("Squat", true);
+        }
+
+        public void AimWeapon()
+        {
+            RightHandWeaponView.SetCrosshair(true);
+            playerView.Animator.SetBool("Aiming", true);
+
+            var lookPos = crosshairDotTransform.position - RightHandWeaponView.transform.position;
+            lookPos.y = 0;
+            var rotation = Quaternion.LookRotation(lookPos);
+            RightHandWeaponView.transform.LookAt(crosshairDotTransform);
+            //RightHandWeaponView.transform.localRotation = Quaternion.Slerp(RightHandWeaponView.transform.localRotation, rotation, 1);
+            //RightHandWeaponView.transform.localRotation = Quaternion.Euler(new Vector3(180, LookAt(firstPersonCamera.transform.position, firstPersonCamera.transform.forward);
+            //RightHandWeaponView.transform.localRotation = Quaternion.Euler(90, RightHandWeaponView.transform.rotation.y, RightHandWeaponView.transform.rotation.z);
+            if (isDoubleWeaponAvailable)
+            {
+                LeftHandWeaponView.transform.LookAt(crosshairDotTransform);
+            }
+        }
+
+        public void PutDownWeapon()
+        {
+            RightHandWeaponView.SetCrosshair(false);
+            playerView.Animator.SetBool("Aiming", false);
+            RightHandWeaponView.transform.localRotation = Quaternion.Euler(RightHandWeaponView.GetLocalRotation());
+            if (isDoubleWeaponAvailable)
+            {
+                LeftHandWeaponView.transform.localRotation = Quaternion.Euler(RightHandWeaponView.GetLocalRotation());
+            }
         }
 
         public float GetValueZero()
