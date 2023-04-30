@@ -1,6 +1,7 @@
 using FPHunter.Service;
 using FPHunter.Weapon;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -15,9 +16,9 @@ namespace FPHunter.Player
         private PlayerView playerView;
         private PlayerService playerService;
         private Rigidbody rigidBody;
-        private Camera firstPersonCamera;
+        private GameObject camera;
         private bool isDoubleWeaponAvailable;
-        private Transform crosshairDotTransform;
+        private bool isSniperWeapon;
 
         public PlayerController(PlayerModel _playerModel, PlayerService _playerService, PlayerView _playerPrefab, Transform transform, List<AnimatorController> animatorsList)
         {
@@ -27,12 +28,13 @@ namespace FPHunter.Player
 
             playerView.SetPlayerController(this);
             rigidBody = playerView.RigidBody;
-            playerView.SetPlayerAnimator(animatorsList[playerModel.Zero]);
-            firstPersonCamera = playerView.FirstPersonCamera;
-            firstPersonCamera.transform.localRotation =  Quaternion.Euler(playerModel.Zero, playerModel.Zero, playerModel.Zero);
+            camera = playerView.FirstPersonCamera;
+            camera.transform.localRotation =  Quaternion.Euler(playerModel.Zero, playerModel.Zero, playerModel.Zero);
 
             RightHandWeaponView = playerService.GetRightHandWeapon();
             LeftHandWeaponView = playerService.GetLeftHandWeapon();
+
+            playerModel.SetMovementSpeed(RightHandWeaponView.GetWeaponWeight());
 
             if(LeftHandWeaponView == null)
             {
@@ -41,10 +43,20 @@ namespace FPHunter.Player
             else
             {
                 isDoubleWeaponAvailable = true;
+                playerModel.SetMovementSpeed(LeftHandWeaponView.GetWeaponWeight());
+            }
+
+
+            if(RightHandWeaponView.GetWeaponType() == Enum.ObjectType.Sniper)
+            {
+                isSniperWeapon = true;
+            }
+            else
+            {
+                isSniperWeapon = false;
             }
 
             PlaceGunInHand();
-            crosshairDotTransform = playerView.Dot;
             playerView.SetNextShootTime(RightHandWeaponView.GetNextShootTime());
         }
 
@@ -71,7 +83,7 @@ namespace FPHunter.Player
             RightHandWeaponView.gameObject.transform.localRotation = Quaternion.Euler(RightHandWeaponView.GetLocalRotation());
                 
             int animatorListIndex = (int)RightHandWeaponView.GetWeaponType();
-            playerView.SetPlayerAnimator(playerService.AnimatorsList[++animatorListIndex]);
+            playerView.SetPlayerAnimator(playerService.AnimatorsList[animatorListIndex]);
         }
 
         public void Move(float movement)
@@ -97,21 +109,30 @@ namespace FPHunter.Player
 
         public void RotateVertical(float verticalRotation)
         {
-            firstPersonCamera.transform.Rotate(Vector3.right * -verticalRotation * playerModel.RotationSpeed * Time.deltaTime);
+            if (isSniperWeapon && playerView.IsAiming)
+            {
+                camera = playerView.SniperCamera;
+            }
+            else
+            {
+                camera = playerView.FirstPersonCamera;
+            }
 
-            float currentAngle = firstPersonCamera.transform.localEulerAngles.x;
+            camera.transform.Rotate(Vector3.right * -verticalRotation * playerModel.RotationSpeed * Time.deltaTime);
+
+            float currentAngle = camera.transform.localEulerAngles.x;
 
             bool isHigherThanRange = currentAngle > playerModel.FirstMaxAngle && currentAngle < playerModel.SecondMaxAngle;
             bool isLowerThanRange = currentAngle < playerModel.FirstMinAngle && currentAngle > playerModel.SecondMinAngle;
 
             if (isHigherThanRange)
             {
-                firstPersonCamera.transform.localEulerAngles = new Vector3(Mathf.Clamp(currentAngle, playerModel.Zero, playerModel.FirstMaxAngle), playerModel.Zero, playerModel.Zero);
+                camera.transform.localEulerAngles = new Vector3(Mathf.Clamp(currentAngle, playerModel.Zero, playerModel.FirstMaxAngle), playerModel.Zero, playerModel.Zero);
             }
 
             if (isLowerThanRange)
             {
-                firstPersonCamera.transform.localEulerAngles = new Vector3(Mathf.Clamp(currentAngle, playerModel.FirstMinAngle, playerModel.FirstMinAngle), playerModel.Zero, playerModel.Zero);
+                camera.transform.localEulerAngles = new Vector3(Mathf.Clamp(currentAngle, playerModel.FirstMinAngle, playerModel.FirstMinAngle), playerModel.Zero, playerModel.Zero);
             }
         }
 
@@ -130,16 +151,16 @@ namespace FPHunter.Player
             RightHandWeaponView.SetCrosshair(true);
             playerView.Animator.SetBool("Aiming", true);
 
-            var lookPos = crosshairDotTransform.position - RightHandWeaponView.transform.position;
-            lookPos.y = 0;
-            var rotation = Quaternion.LookRotation(lookPos);
-            RightHandWeaponView.transform.LookAt(crosshairDotTransform);
-            //RightHandWeaponView.transform.localRotation = Quaternion.Slerp(RightHandWeaponView.transform.localRotation, rotation, 1);
-            //RightHandWeaponView.transform.localRotation = Quaternion.Euler(new Vector3(180, LookAt(firstPersonCamera.transform.position, firstPersonCamera.transform.forward);
-            //RightHandWeaponView.transform.localRotation = Quaternion.Euler(90, RightHandWeaponView.transform.rotation.y, RightHandWeaponView.transform.rotation.z);
+            if (isSniperWeapon)
+            {
+                playerView.SetCamera(false, true);
+            }
+
+            RightHandWeaponView.transform.LookAt(playerView.CrosshairDot);
+            
             if (isDoubleWeaponAvailable)
             {
-                LeftHandWeaponView.transform.LookAt(crosshairDotTransform);
+                LeftHandWeaponView.transform.LookAt(playerView.CrosshairDot);
             }
         }
 
@@ -147,11 +168,35 @@ namespace FPHunter.Player
         {
             RightHandWeaponView.SetCrosshair(false);
             playerView.Animator.SetBool("Aiming", false);
+
+            if (isSniperWeapon)
+            {
+                playerView.SetCamera(true, false);
+            }
+
             RightHandWeaponView.transform.localRotation = Quaternion.Euler(RightHandWeaponView.GetLocalRotation());
+
             if (isDoubleWeaponAvailable)
             {
                 LeftHandWeaponView.transform.localRotation = Quaternion.Euler(RightHandWeaponView.GetLocalRotation());
             }
+        }
+
+        public void SpawnBullet()
+        {
+            if (isDoubleWeaponAvailable)
+            {
+                SpawnBulletWithDelay();
+            }
+
+            playerService.BulletService.SpawnBullet(RightHandWeaponView.GetBulletType(), playerView.CrosshairDot, playerView.CrosshairDot.rotation);
+        }
+
+        private async void SpawnBulletWithDelay()
+        {
+            playerService.BulletService.SpawnBullet(RightHandWeaponView.GetBulletType(), playerView.CrosshairDot, playerView.CrosshairDot.rotation);
+
+            await Task.Delay(playerModel.BulletSpawnDelayInMicroSeconds);
         }
 
         public float GetValueZero()

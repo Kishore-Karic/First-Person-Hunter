@@ -27,14 +27,19 @@ namespace FPHunter.Weapon
             weaponController.SetCrosshair(_value);
         }
 
-        public Transform GetCrosshairDotObject()
-        {
-            return weaponController.GetCrosshairDotObject();
-        }
-
         public float GetNextShootTime()
         {
             return weaponController.GetNextShootTime();
+        }
+
+        public BulletType GetBulletType()
+        {
+            return weaponController.GetBulletType();
+        }
+
+        public float GetWeaponWeight()
+        {
+            return weaponController.GetWeaponWeight();
         }
     }
 }

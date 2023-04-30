@@ -1,3 +1,4 @@
+using FPHunter.Bullet;
 using FPHunter.Managers;
 using FPHunter.Player;
 using FPHunter.Weapon;
@@ -11,8 +12,10 @@ namespace FPHunter.Service
     {
         [SerializeField] private PlayerView playerPrefab;
         [SerializeField] private PlayerModelData playerModelData;
-        [field: SerializeField] public List<AnimatorController> AnimatorsList { get; private set; }
         [SerializeField] private WeaponService weaponService;
+        
+        [field: SerializeField] public BulletService BulletService { get; private set; }
+        [field: SerializeField] public List<AnimatorController> AnimatorsList { get; private set; }
 
         private void Start()
         {

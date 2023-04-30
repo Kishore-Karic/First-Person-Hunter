@@ -7,6 +7,7 @@ namespace FPHunter.Weapon
     public class WeaponScriptableObject : ScriptableObject
     {
         public ObjectType ObjectType;
+        public BulletType BulletType;
         public float WeaponWeight;
         public ScopeType ScopeType;
         public Vector3 LocalRotation;

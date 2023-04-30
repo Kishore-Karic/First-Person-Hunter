@@ -7,10 +7,15 @@ namespace FPHunter.Player
     {
         [field: SerializeField] public Rigidbody RigidBody { get; private set; }
         [field: SerializeField] public Animator Animator { get; private set; }
-        [field: SerializeField] public Camera FirstPersonCamera { get; private set; }
+        [field: SerializeField] public GameObject FirstPersonCamera { get; private set; }
+        [field: SerializeField] public GameObject SniperCamera { get; private set; }
         [field: SerializeField] public Transform RightHandGunSlot { get; private set; }
         [field: SerializeField] public Transform LeftHandGunSlot { get; private set; }
-        [field: SerializeField] public Transform Dot { get; private set; }
+        [field: SerializeField] public Transform CrosshairDot { get; private set; }
+        [field: SerializeField] public Transform BulletSpawnPoint { get; private set; }
+
+        [SerializeField] private Camera firstPersonCamera;
+        [SerializeField] private Camera sniperCamera;
 
         private PlayerController playerController;
         private float movement;
@@ -19,7 +24,7 @@ namespace FPHunter.Player
         private float zero;
         private float nextShootTime;
         private float currentShootTime;
-        private bool isAiming;
+        public bool IsAiming { get; private set; }
         
         public bool IsCrouching { get; private set; }
 
@@ -59,22 +64,23 @@ namespace FPHunter.Player
                 playerController.PlayerIsStanding();
             }
 
-            if (Input.GetKey(KeyCode.Mouse1))
+            if (Input.GetKey(KeyCode.Mouse1) && movement == zero)
             {
                 playerController.AimWeapon();
-                isAiming = true;
+                IsAiming = true;
             }
             else
             {
                 playerController.PutDownWeapon();
-                isAiming = false;
+                IsAiming = false;
             }
 
             currentShootTime += Time.deltaTime;
-            if (isAiming && currentShootTime > nextShootTime && Input.GetKeyDown(KeyCode.Mouse0))
+            if (IsAiming && currentShootTime > nextShootTime && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 currentShootTime = zero;
                 Animator.SetTrigger("Attack");
+                playerController.SpawnBullet();
             }
         }
 
@@ -83,6 +89,12 @@ namespace FPHunter.Player
             movement = Input.GetAxisRaw("Vertical");
             horizontalRotation = Input.GetAxisRaw("Mouse X");
             verticalRotation = Input.GetAxisRaw("Mouse Y");
+        }
+
+        public void SetCamera(bool _fpsCamera, bool _sniperCamera)
+        {
+            firstPersonCamera.enabled = _fpsCamera;
+            sniperCamera.enabled = _sniperCamera;
         }
 
         public void SetPlayerAnimator(AnimatorController _animatorController)
@@ -98,6 +110,7 @@ namespace FPHunter.Player
         public void SetNextShootTime(float _time)
         {
             nextShootTime = _time;
+            currentShootTime = nextShootTime;
         }
     }
 }

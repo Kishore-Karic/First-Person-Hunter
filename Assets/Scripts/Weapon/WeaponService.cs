@@ -1,5 +1,4 @@
 using FPHunter.Enum;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +9,7 @@ namespace FPHunter.Weapon
         [SerializeField] private List<WeaponView> weaponPrefabs;
         [SerializeField] private WeaponScriptableObjectList weaponScriptableObjectList;
         [SerializeField] private List<GameObject> crosshairList;
+        public bool IsCrosshairCreated { get; private set; }
 
         public WeaponView GetWeapon(ObjectType objectType)
         {
@@ -26,10 +26,16 @@ namespace FPHunter.Weapon
                 if (weaponScriptableObjectList.weaponScriptableObjects[i].ObjectType == objectType)
                 {
                     weaponScriptableObject = weaponScriptableObjectList.weaponScriptableObjects[i];
+                    break;
                 }
             }
 
             return weaponScriptableObject;
+        }
+
+        public void SetIsCrosshairCreated(bool _value)
+        {
+            IsCrosshairCreated = _value;
         }
 
         public GameObject GetCrosshair(int i)

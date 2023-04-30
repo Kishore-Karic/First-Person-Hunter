@@ -13,4 +13,11 @@ namespace FPHunter.Enum
         NormalCrosshair,
         SniperScope
     }
+
+    public enum BulletType
+    {
+        SinglePistolBullet,
+        DoublePistolBullet,
+        SniperBullet
+    }
 }

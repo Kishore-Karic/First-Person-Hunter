@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace FPHunter.Player
 {
     public class PlayerModel
@@ -12,7 +10,7 @@ namespace FPHunter.Player
         public float SecondMaxAngle { get; private set; }
         public float FirstMinAngle { get; private set; }
         public float SecondMinAngle { get; private set; }
-
+        public int BulletSpawnDelayInMicroSeconds { get; private set; }
 
         public PlayerModel(PlayerModelData playerModelData)
         {
@@ -24,6 +22,13 @@ namespace FPHunter.Player
             SecondMaxAngle = playerModelData.CameraSecondMaxAngle;
             FirstMinAngle = playerModelData.CameraFirstMinAngle;
             SecondMinAngle = playerModelData.CameraSecondMinAngle;
+            BulletSpawnDelayInMicroSeconds = playerModelData.BulletSpawnDelayInMicroSeconds;
+        }
+
+        public void SetMovementSpeed(float _speed)
+        {
+            NormalMovementSpeed -= _speed;
+            CrouchMovementSpeed -= _speed;
         }
     }
 }
