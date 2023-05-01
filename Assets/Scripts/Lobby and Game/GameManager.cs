@@ -7,6 +7,7 @@ namespace FPHunter.Managers
     public class GameManager : GenericSingleton<GameManager>
     {
         private ObjectType objectType;
+        private int gamePlayIndex;
 
         public void SetWeaponType(ObjectType _objectType)
         {
@@ -22,6 +23,16 @@ namespace FPHunter.Managers
         {
             int gameScene = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(++gameScene);
+        }
+
+        public void SetIndex(int _value)
+        {
+            gamePlayIndex = _value;
+        }
+
+        public int GetIndex()
+        {
+            return gamePlayIndex;
         }
     }
 }

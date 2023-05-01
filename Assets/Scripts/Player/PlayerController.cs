@@ -1,4 +1,3 @@
-using FPHunter.Service;
 using FPHunter.Weapon;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,10 +19,11 @@ namespace FPHunter.Player
         private bool isDoubleWeaponAvailable;
         private bool isSniperWeapon;
 
-        public PlayerController(PlayerModel _playerModel, PlayerService _playerService, PlayerView _playerPrefab, Transform transform, List<AnimatorController> animatorsList)
+        public PlayerController(PlayerModel _playerModel, PlayerService _playerService, PlayerView _playerPrefab, Vector3 spawnPosition, List<AnimatorController> animatorsList)
         {
             playerModel= _playerModel;
-            playerView = GameObject.Instantiate(_playerPrefab, transform);
+            playerView = GameObject.Instantiate(_playerPrefab);
+            playerView.transform.position = spawnPosition;
             playerService = _playerService;
 
             playerView.SetPlayerController(this);
@@ -58,6 +58,11 @@ namespace FPHunter.Player
 
             PlaceGunInHand();
             playerView.SetNextShootTime(RightHandWeaponView.GetNextShootTime());
+        }
+
+        public Transform GetPlayerViewTransform()
+        {
+            return playerView.transform;
         }
 
         private void PlaceGunInHand()
@@ -134,6 +139,8 @@ namespace FPHunter.Player
             {
                 camera.transform.localEulerAngles = new Vector3(Mathf.Clamp(currentAngle, playerModel.FirstMinAngle, playerModel.FirstMinAngle), playerModel.Zero, playerModel.Zero);
             }
+
+            playerView.BulletSpawnPoint.transform.rotation = camera.transform.rotation;
         }
 
         public void PlayerIsStanding()
@@ -189,14 +196,19 @@ namespace FPHunter.Player
                 SpawnBulletWithDelay();
             }
 
-            playerService.BulletService.SpawnBullet(RightHandWeaponView.GetBulletType(), playerView.CrosshairDot, playerView.CrosshairDot.rotation);
+            playerService.BulletService.SpawnBullet(RightHandWeaponView.GetBulletType(), playerView.BulletSpawnPoint, playerView.BulletSpawnPoint.rotation);
         }
 
         private async void SpawnBulletWithDelay()
         {
-            playerService.BulletService.SpawnBullet(RightHandWeaponView.GetBulletType(), playerView.CrosshairDot, playerView.CrosshairDot.rotation);
+            playerService.BulletService.SpawnBullet(RightHandWeaponView.GetBulletType(), playerView.BulletSpawnPoint, playerView.BulletSpawnPoint.rotation);
 
             await Task.Delay(playerModel.BulletSpawnDelayInMicroSeconds);
+        }
+
+        public void PlayerDead()
+        {
+            playerView.PlayerDead();
         }
 
         public float GetValueZero()

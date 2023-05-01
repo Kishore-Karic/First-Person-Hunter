@@ -23,7 +23,7 @@ namespace FPHunter.Bullet
             bulletController = _bulletController;
         }
 
-        private void OnColliderEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             DestroyObject();
         }

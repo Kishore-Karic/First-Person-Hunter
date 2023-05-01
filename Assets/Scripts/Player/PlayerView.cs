@@ -24,63 +24,67 @@ namespace FPHunter.Player
         private float zero;
         private float nextShootTime;
         private float currentShootTime;
+        private bool isDead;
         public bool IsAiming { get; private set; }
-        
         public bool IsCrouching { get; private set; }
 
         public void SetPlayerController(PlayerController _playerController)
         {
             playerController = _playerController;
             zero = playerController.GetValueZero();
+            isDead = false;
         }
 
         private void Update()
         {
-            Movement();
+            if (!isDead)
+            {
+                Movement();
 
-            if(movement != zero)
-            {
-                playerController.Move(movement);
-            }
+                if (movement != zero)
+                {
+                    playerController.Move(movement);
+                }
 
-            if(horizontalRotation != zero)
-            {
-                playerController.RotateHorizontal(horizontalRotation);
-            }
+                if (horizontalRotation != zero)
+                {
+                    playerController.RotateHorizontal(horizontalRotation);
+                }
 
-            if(verticalRotation != zero)
-            {
-                playerController.RotateVertical(verticalRotation);
-            }
+                if (verticalRotation != zero)
+                {
+                    playerController.RotateVertical(verticalRotation);
+                }
 
-            if(Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift))
-            {
-                IsCrouching = true;
-                playerController.PlayerIsCrouching();
-            }
-            else
-            {
-                IsCrouching = false;
-                playerController.PlayerIsStanding();
-            }
+                if (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift))
+                {
+                    IsCrouching = true;
+                    playerController.PlayerIsCrouching();
+                }
+                else
+                {
+                    IsCrouching = false;
+                    playerController.PlayerIsStanding();
+                }
 
-            if (Input.GetKey(KeyCode.Mouse1) && movement == zero)
-            {
-                playerController.AimWeapon();
-                IsAiming = true;
-            }
-            else
-            {
-                playerController.PutDownWeapon();
-                IsAiming = false;
-            }
+                if (Input.GetKey(KeyCode.Mouse1) && movement == zero)
+                {
+                    playerController.AimWeapon();
+                    IsAiming = true;
+                }
+                else
+                {
+                    playerController.PutDownWeapon();
+                    IsAiming = false;
+                }
 
-            currentShootTime += Time.deltaTime;
-            if (IsAiming && currentShootTime > nextShootTime && Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                currentShootTime = zero;
-                Animator.SetTrigger("Attack");
-                playerController.SpawnBullet();
+                currentShootTime += Time.deltaTime;
+                if (IsAiming && currentShootTime > nextShootTime && Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    currentShootTime = zero;
+                    Animator.SetTrigger("Attack");
+                    playerController.SpawnBullet();
+                }
             }
         }
 
@@ -111,6 +115,11 @@ namespace FPHunter.Player
         {
             nextShootTime = _time;
             currentShootTime = nextShootTime;
+        }
+
+        public void PlayerDead()
+        {
+            isDead = true;
         }
     }
 }

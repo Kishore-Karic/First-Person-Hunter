@@ -2,6 +2,7 @@ using FPHunter.Enum;
 using FPHunter.Managers;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace FPHunter.Service
 {
@@ -15,10 +16,48 @@ namespace FPHunter.Service
         [SerializeField] private Transform playerLeftHand;
         [SerializeField] private Vector3 localRotation;
         [SerializeField] private int zero;
+        [SerializeField] private List<GameObject> enemySlides;
+        [SerializeField] private int enemySlidesMinCount;
+        [SerializeField] private int enemySlidesMaxCount;
+        [SerializeField] private Button previosButton;
+        [SerializeField] private Button nextsButton;
 
+        private int enemySlidesCurrentCount;
+        
         private void Awake()
         {
+            previosButton.onClick.AddListener(ShowPreviousScreen);
+            nextsButton.onClick.AddListener(ShowNextScreen);
+        }
+
+        private void Start()
+        {
             playerAnimator.runtimeAnimatorController = animatorControllersList[zero];
+            enemySlidesCurrentCount = enemySlidesMinCount;
+        }
+
+        private void ShowPreviousScreen()
+        {
+            if(enemySlidesCurrentCount != enemySlidesMinCount)
+            {
+                enemySlides[enemySlidesCurrentCount].SetActive(false);
+                enemySlidesCurrentCount--;
+                enemySlides[enemySlidesCurrentCount].SetActive(true);
+            }
+
+            GameManager.Instance.SetIndex(enemySlidesCurrentCount);
+        }
+
+        private void ShowNextScreen()
+        {
+            if (enemySlidesCurrentCount != enemySlidesMaxCount)
+            {
+                enemySlides[enemySlidesCurrentCount].SetActive(false);
+                enemySlidesCurrentCount++;
+                enemySlides[enemySlidesCurrentCount].SetActive(true);
+            }
+
+            GameManager.Instance.SetIndex(enemySlidesCurrentCount);
         }
 
         public void ButtonClick(int i)
