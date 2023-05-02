@@ -20,13 +20,13 @@ MonoBehaviour:
   PatrolRange: 15
   CloseRange: 10
   ChaseRange: 20
-  AttackRange: 3.5
+  AttackRange: 4.5
   Zero: 0
   SlowEffectTime: 0.3
   FrontView: 0.75
   BackView: -1
-  EyesDamageMultiplier: 3
-  HeadDamageMultiplier: 2
+  EyesDamageMultiplier: 2.7
+  HeadDamageMultiplier: 1.7
   BodyDamageMultiplier: 1.15
   LegsDamageMultiplier: 1.25
   DestroyTime: 4

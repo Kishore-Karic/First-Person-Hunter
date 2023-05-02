@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9edbf51a6b006cb4b918d4e1f0e42a53, type: 3}
   m_Name: Sniper
   m_EditorClassIdentifier: 
-  ObjectType: 2
+  WeaponType: 2
   BulletType: 2
   WeaponWeight: 15
   ScopeType: 1
   LocalRotation: {x: 90, y: 0, z: 0}
-  NextShootTime: 1.5
+  NextShootTime: 2.5
   Zero: 0

@@ -5,7 +5,7 @@ namespace FPHunter.Weapon
 {
     public class WeaponModel
     {
-        public ObjectType ObjectType { get; private set; }
+        public WeaponType WeaponType { get; private set; }
         public BulletType BulletType { get; private set; }
         public float WeaponWeight { get; private set; }
         public ScopeType ScopeType { get; private set; }
@@ -15,7 +15,7 @@ namespace FPHunter.Weapon
 
         public WeaponModel(WeaponScriptableObject weaponScriptableObject)
         {
-            ObjectType = weaponScriptableObject.ObjectType;
+            WeaponType = weaponScriptableObject.WeaponType;
             BulletType = weaponScriptableObject.BulletType;
             WeaponWeight = weaponScriptableObject.WeaponWeight;
             ScopeType = weaponScriptableObject.ScopeType;

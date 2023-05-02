@@ -11,19 +11,19 @@ namespace FPHunter.Weapon
         [SerializeField] private List<GameObject> crosshairList;
         public bool IsCrosshairCreated { get; private set; }
 
-        public WeaponView GetWeapon(ObjectType objectType)
-        {
-            WeaponController weaponController = new WeaponController(new WeaponModel(GetWeaponScriptableObject(objectType)), this, weaponPrefabs[(int)objectType]);
+        public WeaponView GetWeapon(WeaponType weaponType)
+        {   
+            WeaponController weaponController = new WeaponController(new WeaponModel(GetWeaponScriptableObject(weaponType)), this, weaponPrefabs[(int)weaponType]);
             return weaponController.ReturnWeaponView();
         }
 
-        private WeaponScriptableObject GetWeaponScriptableObject(ObjectType objectType)
+        private WeaponScriptableObject GetWeaponScriptableObject(WeaponType weaponType)
         {
             WeaponScriptableObject weaponScriptableObject = null;
 
             for(int i = 0; i < weaponScriptableObjectList.weaponScriptableObjects.Count; i++)
             {
-                if (weaponScriptableObjectList.weaponScriptableObjects[i].ObjectType == objectType)
+                if (weaponScriptableObjectList.weaponScriptableObjects[i].WeaponType == weaponType)
                 {
                     weaponScriptableObject = weaponScriptableObjectList.weaponScriptableObjects[i];
                     break;

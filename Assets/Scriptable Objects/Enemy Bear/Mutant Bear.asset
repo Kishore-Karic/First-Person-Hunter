@@ -13,6 +13,20 @@ MonoBehaviour:
   m_Name: Mutant Bear
   m_EditorClassIdentifier: 
   Texture: {fileID: 2800000, guid: d28fabf885861fb48ae21d198e816aaf, type: 3}
-  MovementSpeed: 0
-  IdleTime: 0
-  RoamingDistance: 0
+  TotalHealth: 250
+  IdleTime: 2
+  WalkSpeed: 2.5
+  RunSpeed: 8
+  PatrolRange: 20
+  CloseRange: 16
+  ChaseRange: 26
+  AttackRange: 4.5
+  Zero: 0
+  SlowEffectTime: 0.3
+  FrontView: 0
+  BackView: 0
+  EyesDamageMultiplier: 3
+  HeadDamageMultiplier: 2
+  BodyDamageMultiplier: 1.17
+  LegsDamageMultiplier: 1.27
+  DestroyTime: 4

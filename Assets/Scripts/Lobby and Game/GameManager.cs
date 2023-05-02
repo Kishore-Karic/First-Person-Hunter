@@ -12,17 +12,17 @@ namespace FPHunter.Managers
         [SerializeField] private GameObject gameWonLayer;
         [SerializeField] private float returnTime;
 
-        private ObjectType objectType;
+        private WeaponType weaponType;
         private int gamePlayIndex;
 
-        public void SetWeaponType(ObjectType _objectType)
+        public void SetWeaponType(WeaponType _weaponType)
         {
-            objectType = _objectType;
+            weaponType = _weaponType;
         }
 
-        public ObjectType GetWeaponType()
+        public WeaponType GetWeaponType()
         {
-            return objectType;
+            return weaponType;
         }
 
         public void StartGame()

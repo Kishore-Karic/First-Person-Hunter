@@ -1,11 +1,10 @@
 namespace FPHunter.Enum
 {
-    public enum ObjectType
+    public enum WeaponType
     {
         SinglePistol,
         DoublePistol,
-        Sniper, 
-        Bullet
+        Sniper
     }
 
     public enum ScopeType
@@ -27,5 +26,13 @@ namespace FPHunter.Enum
         Head,
         Body,
         Legs
+    }
+
+    public enum Sounds
+    {
+        LobbyTheme,
+        GameTheme,
+        PistolFire,
+        SniperFire
     }
 }

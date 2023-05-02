@@ -1,3 +1,5 @@
+using FPHunter.Enum;
+using FPHunter.Managers;
 using FPHunter.Weapon;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,7 +19,7 @@ namespace FPHunter.Player
         private Rigidbody rigidBody;
         private GameObject camera;
         private bool isDoubleWeaponAvailable;
-        private bool isSniperWeapon;
+        private bool isSniperWeaponAvailable;
 
         public PlayerController(PlayerModel _playerModel, PlayerService _playerService, PlayerView _playerPrefab, Vector3 spawnPosition, List<AnimatorController> animatorsList)
         {
@@ -47,13 +49,13 @@ namespace FPHunter.Player
             }
 
 
-            if(RightHandWeaponView.GetWeaponType() == Enum.ObjectType.Sniper)
+            if(RightHandWeaponView.GetWeaponType() == Enum.WeaponType.Sniper)
             {
-                isSniperWeapon = true;
+                isSniperWeaponAvailable = true;
             }
             else
             {
-                isSniperWeapon = false;
+                isSniperWeaponAvailable = false;
             }
 
             PlaceGunInHand();
@@ -91,20 +93,14 @@ namespace FPHunter.Player
             playerView.SetPlayerAnimator(playerService.AnimatorsList[animatorListIndex]);
         }
 
-        public void Move(float movement)
+        public void MoveVerticle(float movement)
         {
-            float currentMovementSpeed;
+            rigidBody.velocity = playerView.transform.forward * movement * playerModel.MovementSpeed * Time.deltaTime;
+        }
 
-            if (playerView.IsCrouching)
-            {
-                currentMovementSpeed = playerModel.CrouchMovementSpeed;
-            }
-            else
-            {
-                currentMovementSpeed = playerModel.NormalMovementSpeed;
-            }
-
-            rigidBody.velocity = playerView.transform.forward * movement * currentMovementSpeed * Time.deltaTime;
+        public void MoveHorizontal(float movement)
+        {
+            rigidBody.velocity = playerView.transform.right * movement * playerModel.MovementSpeed * Time.deltaTime;
         }
 
         public void RotateHorizontal(float horizontalRotation)
@@ -114,7 +110,7 @@ namespace FPHunter.Player
 
         public void RotateVertical(float verticalRotation)
         {
-            if (isSniperWeapon && playerView.IsAiming)
+            if (isSniperWeaponAvailable && playerView.IsAiming)
             {
                 camera = playerView.SniperCamera;
             }
@@ -143,22 +139,12 @@ namespace FPHunter.Player
             playerView.BulletSpawnPoint.transform.rotation = camera.transform.rotation;
         }
 
-        public void PlayerIsStanding()
-        {
-            playerView.Animator.SetBool("Squat", false);
-        }
-
-        public void PlayerIsCrouching()
-        {
-            playerView.Animator.SetBool("Squat", true);
-        }
-
         public void AimWeapon()
         {
             RightHandWeaponView.SetCrosshair(true);
             playerView.Animator.SetBool("Aiming", true);
 
-            if (isSniperWeapon)
+            if (isSniperWeaponAvailable)
             {
                 playerView.SetCamera(false, true);
             }
@@ -176,7 +162,7 @@ namespace FPHunter.Player
             RightHandWeaponView.SetCrosshair(false);
             playerView.Animator.SetBool("Aiming", false);
 
-            if (isSniperWeapon)
+            if (isSniperWeaponAvailable)
             {
                 playerView.SetCamera(true, false);
             }
@@ -189,6 +175,22 @@ namespace FPHunter.Player
             }
         }
 
+        public void ZoomInCamera()
+        {
+            if (playerView.GetSniperCamera().fieldOfView > playerModel.CameraScrollMinValue)
+            {
+                playerView.GetSniperCamera().fieldOfView--;
+            }
+        }
+
+        public void ZoomOutCamera()
+        {
+            if (playerView.GetSniperCamera().fieldOfView < playerModel.CameraScrollMaxValue)
+            {
+                playerView.GetSniperCamera().fieldOfView++;
+            }
+        }
+
         public void SpawnBullet()
         {
             if (isDoubleWeaponAvailable)
@@ -196,11 +198,21 @@ namespace FPHunter.Player
                 SpawnBulletWithDelay();
             }
 
+            if (isSniperWeaponAvailable)
+            {
+                SoundManager.Instance.PlayEffects(Sounds.SniperFire);
+            }
+            else
+            {
+                SoundManager.Instance.PlayEffects(Sounds.PistolFire);
+            }
+
             playerService.BulletService.SpawnBullet(RightHandWeaponView.GetBulletType(), playerView.BulletSpawnPoint, playerView.BulletSpawnPoint.rotation);
         }
 
         private async void SpawnBulletWithDelay()
         {
+            SoundManager.Instance.PlayEffects(Sounds.PistolFire);
             playerService.BulletService.SpawnBullet(RightHandWeaponView.GetBulletType(), playerView.BulletSpawnPoint, playerView.BulletSpawnPoint.rotation);
 
             await Task.Delay(playerModel.BulletSpawnDelayInMicroSeconds);
@@ -208,6 +220,7 @@ namespace FPHunter.Player
 
         public void PlayerDead()
         {
+            RightHandWeaponView.SetCrosshair(false);
             playerView.PlayerDead();
         }
 

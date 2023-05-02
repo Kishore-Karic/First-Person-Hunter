@@ -13,6 +13,20 @@ MonoBehaviour:
   m_Name: Albedo Bear
   m_EditorClassIdentifier: 
   Texture: {fileID: 2800000, guid: e22ae1e52f5a40b4d9b12395f2ea4b24, type: 3}
-  MovementSpeed: 0
-  IdleTime: 0
-  RoamingDistance: 0
+  TotalHealth: 150
+  IdleTime: 6
+  WalkSpeed: 1.5
+  RunSpeed: 5
+  PatrolRange: 15
+  CloseRange: 12
+  ChaseRange: 22
+  AttackRange: 4.5
+  Zero: 0
+  SlowEffectTime: 0.3
+  FrontView: 0
+  BackView: -1
+  EyesDamageMultiplier: 2.8
+  HeadDamageMultiplier: 1.8
+  BodyDamageMultiplier: 1.15
+  LegsDamageMultiplier: 1.25
+  DestroyTime: 4

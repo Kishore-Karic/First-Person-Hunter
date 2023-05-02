@@ -35,9 +35,9 @@ namespace FPHunter.Weapon
             return weaponModel.LocalRotation;
         }
 
-        public ObjectType GetWeaponType()
+        public WeaponType GetWeaponType()
         {
-            return weaponModel.ObjectType;
+            return weaponModel.WeaponType;
         }
 
         public void SetCrosshair(bool _value)

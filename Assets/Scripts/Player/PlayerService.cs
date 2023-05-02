@@ -1,4 +1,5 @@
 using FPHunter.Bullet;
+using FPHunter.Enum;
 using FPHunter.Managers;
 using FPHunter.Weapon;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace FPHunter.Player
 
         private void Start()
         {
+            SoundManager.Instance.StopMusic(Sounds.LobbyTheme);
+            SoundManager.Instance.PlayMusic(Sounds.GameTheme);
             playerController = new PlayerController(new PlayerModel(playerModelData), this, playerPrefab, spawnPoints[GameManager.Instance.GetIndex()], AnimatorsList);
         }
 
@@ -31,7 +34,7 @@ namespace FPHunter.Player
 
         public WeaponView GetLeftHandWeapon()
         {
-            if(GameManager.Instance.GetWeaponType() == Enum.ObjectType.DoublePistol)
+            if(GameManager.Instance.GetWeaponType() == Enum.WeaponType.DoublePistol)
             {
                 return weaponService.GetWeapon(GameManager.Instance.GetWeaponType());
             }

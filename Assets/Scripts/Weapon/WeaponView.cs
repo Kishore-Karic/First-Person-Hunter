@@ -17,7 +17,7 @@ namespace FPHunter.Weapon
             return weaponController.GetLocalRotation();
         }
 
-        public ObjectType GetWeaponType()
+        public WeaponType GetWeaponType()
         {
             return weaponController.GetWeaponType();
         }

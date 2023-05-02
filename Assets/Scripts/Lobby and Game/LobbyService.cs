@@ -44,6 +44,8 @@ namespace FPHunter.Service
             startButton.interactable = false;
             playerAnimator.runtimeAnimatorController = animatorControllersList[zero];
             enemySlidesCurrentCount = enemySlidesMinCount;
+            SoundManager.Instance.StopMusic(Sounds.GameTheme);
+            SoundManager.Instance.PlayMusic(Sounds.LobbyTheme);
         }
 
         private void ShowPreviousSlide()
@@ -77,6 +79,7 @@ namespace FPHunter.Service
 
         private void ShowWeapon(int i)
         {
+            
             if(playerRightHand.childCount > zero)
             {
                 Destroy(playerRightHand.GetChild(zero).gameObject);
@@ -86,18 +89,18 @@ namespace FPHunter.Service
                 Destroy(playerLeftHand.GetChild(zero).gameObject);
             }
 
-            if(i == (int)ObjectType.DoublePistol)
+            if (i == (int)WeaponType.DoublePistol)
             {
-                GameObject newLeftGun = GameObject.Instantiate(weaponsList[i], playerLeftHand);
+                GameObject newLeftGun = Instantiate(weaponsList[i], playerLeftHand);
                 newLeftGun.transform.localPosition = Vector3.zero;
                 newLeftGun.transform.localRotation = Quaternion.Euler(localRotation);
             }
 
-            GameObject newRightGun = GameObject.Instantiate(weaponsList[i], playerRightHand);
+            GameObject newRightGun = Instantiate(weaponsList[i], playerRightHand);
             newRightGun.transform.localPosition = Vector3.zero;
             newRightGun.transform.localRotation = Quaternion.Euler(localRotation);
 
-            GameManager.Instance.SetWeaponType((ObjectType)i);
+            GameManager.Instance.SetWeaponType((WeaponType)i);
             startButton.interactable = true;
             playerAnimator.runtimeAnimatorController = animatorControllersList[++i];
         }

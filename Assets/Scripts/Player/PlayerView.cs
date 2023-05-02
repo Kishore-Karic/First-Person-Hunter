@@ -20,15 +20,16 @@ namespace FPHunter.Player
         [SerializeField] private Camera sniperCamera;
 
         private PlayerController playerController;
-        private float movement;
+        private float moveZAxis;
+        private float moveXAxis;
         private float horizontalRotation;
         private float verticalRotation;
+        private float mouseScroll;
         private float zero;
         private float nextShootTime;
         private float currentShootTime;
         private bool isDead;
         public bool IsAiming { get; private set; }
-        public bool IsCrouching { get; private set; }
 
         public void SetPlayerController(PlayerController _playerController)
         {
@@ -43,9 +44,14 @@ namespace FPHunter.Player
             {
                 Movement();
 
-                if (movement != zero)
+                if (moveZAxis != zero)
                 {
-                    playerController.Move(movement);
+                    playerController.MoveVerticle(moveZAxis);
+                }
+
+                if(moveXAxis != zero)
+                {
+                    playerController.MoveHorizontal(moveXAxis);
                 }
 
                 if (horizontalRotation != zero)
@@ -58,18 +64,7 @@ namespace FPHunter.Player
                     playerController.RotateVertical(verticalRotation);
                 }
 
-                if (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift))
-                {
-                    IsCrouching = true;
-                    playerController.PlayerIsCrouching();
-                }
-                else
-                {
-                    IsCrouching = false;
-                    playerController.PlayerIsStanding();
-                }
-
-                if (Input.GetKey(KeyCode.Mouse1) && movement == zero)
+                if (Input.GetKey(KeyCode.Mouse1) && moveZAxis == zero && moveXAxis == zero)
                 {
                     playerController.AimWeapon();
                     IsAiming = true;
@@ -87,14 +82,25 @@ namespace FPHunter.Player
                     Animator.SetTrigger("Attack");
                     playerController.SpawnBullet();
                 }
+
+                if (IsAiming && mouseScroll > zero)
+                {
+                    playerController.ZoomInCamera();
+                }
+                else if(IsAiming && mouseScroll < zero)
+                {
+                    playerController.ZoomOutCamera();
+                }
             }
         }
 
         private void Movement()
         {
-            movement = Input.GetAxisRaw("Vertical");
+            moveZAxis = Input.GetAxisRaw("Vertical");
+            moveXAxis = Input.GetAxisRaw("Horizontal");
             horizontalRotation = Input.GetAxisRaw("Mouse X");
             verticalRotation = Input.GetAxisRaw("Mouse Y");
+            mouseScroll = Input.GetAxisRaw("Mouse ScrollWheel");
         }
 
         public void SetCamera(bool _fpsCamera, bool _sniperCamera)
@@ -117,6 +123,11 @@ namespace FPHunter.Player
         {
             nextShootTime = _time;
             currentShootTime = nextShootTime;
+        }
+
+        public Camera GetSniperCamera()
+        {
+            return sniperCamera;
         }
 
         public void PlayerDead()

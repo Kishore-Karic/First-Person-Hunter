@@ -2,8 +2,7 @@ namespace FPHunter.Player
 {
     public class PlayerModel
     {
-        public float CrouchMovementSpeed { get; private set; }
-        public float NormalMovementSpeed { get; private set; }
+        public float MovementSpeed { get; private set; }
         public float RotationSpeed { get; private set; }
         public int Zero { get; private set; }
         public float FirstMaxAngle { get; private set; }
@@ -12,11 +11,12 @@ namespace FPHunter.Player
         public float SecondMinAngle { get; private set; }
         public int BulletSpawnDelayInMicroSeconds { get; private set; }
         public float DestroyTime { get; private set; }
+        public float CameraScrollMinValue { get; private set; }
+        public float CameraScrollMaxValue { get; private set; }
 
         public PlayerModel(PlayerModelData playerModelData)
         {
-            CrouchMovementSpeed = playerModelData.CrouchMovementSpeed;
-            NormalMovementSpeed = playerModelData.NormalMovementSpeed;
+            MovementSpeed = playerModelData.MovementSpeed;
             RotationSpeed = playerModelData.RotationSpeed;
             Zero = playerModelData.Zero;
             FirstMaxAngle = playerModelData.CameraFirstMaxAngle;
@@ -25,12 +25,13 @@ namespace FPHunter.Player
             SecondMinAngle = playerModelData.CameraSecondMinAngle;
             BulletSpawnDelayInMicroSeconds = playerModelData.BulletSpawnDelayInMicroSeconds;
             DestroyTime = playerModelData.DestroyTime;
+            CameraScrollMinValue = playerModelData.CameraScrollMinValue;
+            CameraScrollMaxValue = playerModelData.CameraScrollMaxValue;
         }
 
         public void SetMovementSpeed(float _speed)
         {
-            NormalMovementSpeed -= _speed;
-            CrouchMovementSpeed -= _speed;
+            MovementSpeed -= _speed;
         }
     }
 }

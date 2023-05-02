@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SniperBullet
   m_EditorClassIdentifier: 
   BulletType: 2
-  Damage: 80
+  Damage: 65
   MovementSpeed: 10000
   DestroyTime: 7

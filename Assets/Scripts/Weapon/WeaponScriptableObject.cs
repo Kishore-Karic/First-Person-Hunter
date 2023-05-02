@@ -6,7 +6,7 @@ namespace FPHunter.Weapon
     [CreateAssetMenu(fileName = "Weapon", menuName = "ScriptableObjects/New Weapon")]
     public class WeaponScriptableObject : ScriptableObject
     {
-        public ObjectType ObjectType;
+        public WeaponType WeaponType;
         public BulletType BulletType;
         public float WeaponWeight;
         public ScopeType ScopeType;
