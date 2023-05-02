@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: SinglePistol
   m_EditorClassIdentifier: 
   ObjectType: 0
+  BulletType: 0
   WeaponWeight: 5
   ScopeType: 0
   LocalRotation: {x: 90, y: 0, z: 0}
-  NextShootTime: 4
+  NextShootTime: 0.5
   Zero: 0

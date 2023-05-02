@@ -215,5 +215,10 @@ namespace FPHunter.Player
         {
             return playerModel.Zero;
         }
+
+        public float GetDestroyTime()
+        {
+            return playerModel.DestroyTime;
+        }
     }
 }

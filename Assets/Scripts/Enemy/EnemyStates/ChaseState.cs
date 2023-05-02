@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace FPHunter.StateMachine.Enemy
 {
     public class ChaseState : BaseState
@@ -23,6 +21,10 @@ namespace FPHunter.StateMachine.Enemy
             if (enemyStateMachine.IsPlayerInAttackRange())
             {
                 stateMachine.SetState(enemyStateMachine.AttackState);
+            }
+            else if (enemyStateMachine.IsAttacked)
+            {
+                enemyStateMachine.NavMeshAgent.SetDestination(enemyStateMachine.GetPlayerTransform().position);
             }
             else if (enemyStateMachine.IsPlayerInChaseRange())
             {

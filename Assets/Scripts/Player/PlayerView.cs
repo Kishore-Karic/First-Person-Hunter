@@ -1,3 +1,5 @@
+using FPHunter.Managers;
+using System.Collections;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -120,6 +122,13 @@ namespace FPHunter.Player
         public void PlayerDead()
         {
             isDead = true;
+            StartCoroutine(DestroyTime());
+        }
+
+        IEnumerator DestroyTime()
+        {
+            yield return new WaitForSeconds(playerController.GetDestroyTime());
+            GameManager.Instance.PlayerDead();
         }
     }
 }

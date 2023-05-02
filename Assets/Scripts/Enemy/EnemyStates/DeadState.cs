@@ -8,5 +8,11 @@ namespace FPHunter.StateMachine.Enemy
         {
             enemyStateMachine = _enemyStateMachine;
         }
+
+        public override void OnStateEnter()
+        {
+            enemyStateMachine.NavMeshAgent.isStopped = true;
+            enemyStateMachine.Animator.SetBool("Death", true);
+        }
     }
 }

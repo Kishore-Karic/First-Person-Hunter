@@ -1,3 +1,4 @@
+using FPHunter.Enemy;
 using UnityEngine;
 
 namespace FPHunter.Bullet
@@ -25,6 +26,11 @@ namespace FPHunter.Bullet
 
         private void OnTriggerEnter(Collider other)
         {
+            if(other.GetComponent<EnemyDamage>() != null)
+            {
+                other.GetComponent<EnemyDamage>().Damage(bulletController.GetDamageValue());
+            }
+
             DestroyObject();
         }
 

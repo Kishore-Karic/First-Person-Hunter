@@ -11,6 +11,7 @@ namespace FPHunter.Player
         public float FirstMinAngle { get; private set; }
         public float SecondMinAngle { get; private set; }
         public int BulletSpawnDelayInMicroSeconds { get; private set; }
+        public float DestroyTime { get; private set; }
 
         public PlayerModel(PlayerModelData playerModelData)
         {
@@ -23,6 +24,7 @@ namespace FPHunter.Player
             FirstMinAngle = playerModelData.CameraFirstMinAngle;
             SecondMinAngle = playerModelData.CameraSecondMinAngle;
             BulletSpawnDelayInMicroSeconds = playerModelData.BulletSpawnDelayInMicroSeconds;
+            DestroyTime = playerModelData.DestroyTime;
         }
 
         public void SetMovementSpeed(float _speed)

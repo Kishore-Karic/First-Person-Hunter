@@ -31,5 +31,10 @@ namespace FPHunter.Bullet
         {
             return bulletModel.DestroyTime;
         }
+
+        public float GetDamageValue()
+        {
+            return bulletModel.Damage;
+        }
     }
 }

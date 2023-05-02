@@ -15,5 +15,6 @@ namespace FPHunter.Player
         [field: SerializeField] public float CameraFirstMinAngle { get; private set; }
         [field: SerializeField] public float CameraSecondMinAngle { get; private set; }
         [field: SerializeField] public int BulletSpawnDelayInMicroSeconds { get; private set; }
+        [field: SerializeField] public float DestroyTime { get; private set; }
     }
 }

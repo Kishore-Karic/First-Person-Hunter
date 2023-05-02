@@ -13,12 +13,20 @@ MonoBehaviour:
   m_Name: Wild Bear
   m_EditorClassIdentifier: 
   Texture: {fileID: 2800000, guid: 93fb1fce8497ab447a7cc4f7faa1f322, type: 3}
-  IdleTime: 4
+  TotalHealth: 100
+  IdleTime: 8
   WalkSpeed: 1
   RunSpeed: 4
   PatrolRange: 15
+  CloseRange: 10
   ChaseRange: 20
-  AttackRange: 4
+  AttackRange: 3.5
   Zero: 0
   SlowEffectTime: 0.3
-  FrontView: 0.7
+  FrontView: 0.75
+  BackView: -1
+  EyesDamageMultiplier: 3
+  HeadDamageMultiplier: 2
+  BodyDamageMultiplier: 1.15
+  LegsDamageMultiplier: 1.25
+  DestroyTime: 4

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2300000}
   - component: {fileID: 3300000}
   - component: {fileID: -4373032790273312280}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SilencedPistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}

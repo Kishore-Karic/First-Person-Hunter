@@ -1,3 +1,5 @@
+using FPHunter.Enum;
+using FPHunter.StateMachine.Enemy;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,6 +10,7 @@ namespace FPHunter.Enemy
         private EnemyModel enemyModel;
         private EnemyService enemyService;
         private EnemyView enemyView;
+        private EnemyStateMachine enemyStateMachine;
         private Transform playerTransform;
 
         public EnemyController(EnemyModel _enemyModel, EnemyService _enemyService, EnemyView _enemyView, Vector3 spawnPosition)
@@ -19,7 +22,8 @@ namespace FPHunter.Enemy
 
             enemyView.SetEnemyController(this);
             enemyView.SetEnemyTexture(enemyModel.EnemyTexture);
-            enemyView.EnemyStateMachine.SetEnemyStateMachine(this, enemyModel.IdleTime, enemyModel.Zero, enemyModel.SlowEffectTime, enemyView.NavMeshAgent, enemyView.Animator);
+            enemyStateMachine = enemyView.EnemyStateMachine;
+            enemyStateMachine.SetEnemyStateMachine(this, enemyModel.IdleTime, enemyModel.Zero, enemyModel.SlowEffectTime, enemyView.NavMeshAgent, enemyView.Animator);
 
             playerTransform = enemyService.GetPlayerObject();
         }
@@ -60,12 +64,17 @@ namespace FPHunter.Enemy
         {
             if (playerTransform != null)
             {
+                if(Vector3.Distance(enemyView.transform.position, playerTransform.position) < enemyModel.CloseRange)
+                {
+                    return true;
+                }
+
                 if(Vector3.Distance(enemyView.transform.position, playerTransform.position) < enemyModel.ChaseRange)
                 {
                     Vector3 dirToTarget = Vector3.Normalize(playerTransform.position - enemyView.transform.position);
                     float viewDistance = Vector3.Dot(enemyView.transform.forward, dirToTarget);
 
-                    if(viewDistance > enemyModel.FrontView)
+                    if(viewDistance > enemyModel.FrontView || viewDistance < enemyModel.BackView)
                     {
                         return true;
                     }
@@ -96,6 +105,52 @@ namespace FPHunter.Enemy
             }
 
             return finalPosition;
+        }
+
+        public void GotDamage(BodyArea bodyArea, float damageValue)
+        {
+            float damageMultiplier;
+
+            switch (bodyArea) 
+            {
+                case BodyArea.Body:
+                    damageMultiplier = enemyModel.BodyDamageMultiplier;
+                    break;
+
+                case BodyArea.Head:
+                    damageMultiplier = enemyModel.HeadDamageMultiplier;
+                    break;
+
+                case BodyArea.Legs:
+                    damageMultiplier = enemyModel.LegsDamageMultiplier;
+                    break;
+
+                case BodyArea.Eyes:
+                    damageMultiplier = enemyModel.EyesDamageMultiplier;
+                    break;
+
+                default:
+                    damageMultiplier = enemyModel.Zero;
+                    break;
+            }
+
+            float currentDamage = damageValue * damageMultiplier;
+            enemyModel.SetEnemyHealth(enemyModel.CurrentHealth - currentDamage);
+            
+            CheckIsDead();
+        }
+
+        private void CheckIsDead()
+        {
+            if(enemyModel.CurrentHealth <= enemyModel.Zero)
+            {
+                enemyStateMachine.EnemyDead();
+                enemyView.DestroyObject(enemyModel.DestroyTime);
+            }
+            else
+            {
+                enemyStateMachine.GotDamage();
+            }
         }
     }
 }

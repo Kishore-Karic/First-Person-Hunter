@@ -21,22 +21,32 @@ namespace FPHunter.Service
         [SerializeField] private int enemySlidesMaxCount;
         [SerializeField] private Button previosButton;
         [SerializeField] private Button nextsButton;
+        [SerializeField] private Button startButton;
+        [SerializeField] private Button exitButton;
+        [SerializeField] private float actualTime;
 
         private int enemySlidesCurrentCount;
         
         private void Awake()
         {
-            previosButton.onClick.AddListener(ShowPreviousScreen);
-            nextsButton.onClick.AddListener(ShowNextScreen);
+            previosButton.onClick.AddListener(ShowPreviousSlide);
+            nextsButton.onClick.AddListener(ShowNextSlide);
+            if (startButton.interactable)
+            {
+                startButton.onClick.AddListener(GameManager.Instance.StartGame);
+            }
+            exitButton.onClick.AddListener(GameManager.Instance.ExitGame);
         }
 
         private void Start()
         {
+            Time.timeScale = actualTime;
+            startButton.interactable = false;
             playerAnimator.runtimeAnimatorController = animatorControllersList[zero];
             enemySlidesCurrentCount = enemySlidesMinCount;
         }
 
-        private void ShowPreviousScreen()
+        private void ShowPreviousSlide()
         {
             if(enemySlidesCurrentCount != enemySlidesMinCount)
             {
@@ -48,7 +58,7 @@ namespace FPHunter.Service
             GameManager.Instance.SetIndex(enemySlidesCurrentCount);
         }
 
-        private void ShowNextScreen()
+        private void ShowNextSlide()
         {
             if (enemySlidesCurrentCount != enemySlidesMaxCount)
             {
@@ -88,6 +98,7 @@ namespace FPHunter.Service
             newRightGun.transform.localRotation = Quaternion.Euler(localRotation);
 
             GameManager.Instance.SetWeaponType((ObjectType)i);
+            startButton.interactable = true;
             playerAnimator.runtimeAnimatorController = animatorControllersList[++i];
         }
     }

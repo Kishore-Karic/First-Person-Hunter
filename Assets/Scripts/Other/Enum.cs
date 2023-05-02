@@ -20,4 +20,12 @@ namespace FPHunter.Enum
         DoublePistolBullet,
         SniperBullet
     }
+
+    public enum BodyArea
+    {
+        Eyes,
+        Head,
+        Body,
+        Legs
+    }
 }

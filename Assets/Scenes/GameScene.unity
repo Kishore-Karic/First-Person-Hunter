@@ -3574,6 +3574,7 @@ MonoBehaviour:
     <CameraFirstMinAngle>k__BackingField: 320
     <CameraSecondMinAngle>k__BackingField: 280
     <BulletSpawnDelayInMicroSeconds>k__BackingField: 1000
+    <DestroyTime>k__BackingField: 1
   weaponService: {fileID: 287584488}
   spawnPoints:
   - {x: 27.08, y: 0.6435059, z: 3.27}

@@ -9,6 +9,7 @@ namespace FPHunter.StateMachine.Enemy
         public float IdleTime { get; private set; }
         public float Zero { get; private set; }
         public float SlowEffectTime { get; private set; }
+        public bool IsAttacked { get; private set; }
         public NavMeshAgent NavMeshAgent { get; private set; }
         public Animator Animator { get; private set; }
 
@@ -46,6 +47,7 @@ namespace FPHunter.StateMachine.Enemy
             IdleTime = _idleTime;
             Zero = _zero;
             SlowEffectTime = _slowEffectTime;
+            IsAttacked = false;
 
             InitializeStates();
 
@@ -80,6 +82,17 @@ namespace FPHunter.StateMachine.Enemy
         public void PlayerDead()
         {
             enemyController.PlayerDead();
+        }
+
+        public void EnemyDead()
+        {
+            SetState(DeadState);
+        }
+
+        public void GotDamage()
+        {
+            IsAttacked = true;
+            SetState(ChaseState);
         }
     }
 }
