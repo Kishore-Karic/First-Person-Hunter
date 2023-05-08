@@ -29,6 +29,7 @@ namespace FPHunter.Player
         private float nextShootTime;
         private float currentShootTime;
         private bool isDead;
+        private Coroutine coroutine;
         public bool IsAiming { get; private set; }
 
         public void SetPlayerController(PlayerController _playerController)
@@ -133,7 +134,13 @@ namespace FPHunter.Player
         public void PlayerDead()
         {
             isDead = true;
-            StartCoroutine(DestroyTime());
+
+            if(coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+
+            coroutine = StartCoroutine(DestroyTime());
         }
 
         IEnumerator DestroyTime()

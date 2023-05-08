@@ -14,6 +14,7 @@ namespace FPHunter.Managers
 
         private WeaponType weaponType;
         private int gamePlayIndex;
+        private Coroutine coroutine;
 
         public void SetWeaponType(WeaponType _weaponType)
         {
@@ -51,13 +52,25 @@ namespace FPHunter.Managers
         public void PlayerDead()
         {
             gameFailedLayer.SetActive(true);
-            StartCoroutine(ReturnToLobby());
+
+            if(coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+
+            coroutine = StartCoroutine(ReturnToLobby());
         }
 
         public void PlayerWon()
         {
             gameWonLayer.SetActive(true);
-            StartCoroutine(ReturnToLobby());
+
+            if(coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+
+            coroutine = StartCoroutine(ReturnToLobby());
         }
 
         IEnumerator ReturnToLobby()

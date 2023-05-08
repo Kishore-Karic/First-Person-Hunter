@@ -48,15 +48,7 @@ namespace FPHunter.Player
                 playerModel.SetMovementSpeed(LeftHandWeaponView.GetWeaponWeight());
             }
 
-
-            if(RightHandWeaponView.GetWeaponType() == Enum.WeaponType.Sniper)
-            {
-                isSniperWeaponAvailable = true;
-            }
-            else
-            {
-                isSniperWeaponAvailable = false;
-            }
+            isSniperWeaponAvailable = RightHandWeaponView.GetWeaponType() == WeaponType.Sniper;
 
             PlaceGunInHand();
             playerView.SetNextShootTime(RightHandWeaponView.GetNextShootTime());

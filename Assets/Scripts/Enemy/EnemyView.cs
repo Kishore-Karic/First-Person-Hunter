@@ -17,6 +17,7 @@ namespace FPHunter.Enemy
         [SerializeField] private SkinnedMeshRenderer meshRenderer;
 
         private EnemyController enemyController;
+        private Coroutine coroutine;
 
         public void SetEnemyController(EnemyController _enemyController)
         {
@@ -35,7 +36,12 @@ namespace FPHunter.Enemy
 
         public void DestroyObject(float _time)
         {
-            StartCoroutine(StartDestroyTimer(_time));
+            if(coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+
+            coroutine = StartCoroutine(StartDestroyTimer(_time));
         }
 
         IEnumerator StartDestroyTimer(float time)
