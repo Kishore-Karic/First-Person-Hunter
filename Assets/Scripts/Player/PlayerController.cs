@@ -3,7 +3,6 @@ using FPHunter.Managers;
 using FPHunter.Weapon;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace FPHunter.Player
@@ -21,7 +20,7 @@ namespace FPHunter.Player
         private bool isDoubleWeaponAvailable;
         private bool isSniperWeaponAvailable;
 
-        public PlayerController(PlayerModel _playerModel, PlayerService _playerService, PlayerView _playerPrefab, Vector3 spawnPosition, List<AnimatorController> animatorsList)
+        public PlayerController(PlayerModel _playerModel, PlayerService _playerService, PlayerView _playerPrefab, Vector3 spawnPosition, List<RuntimeAnimatorController> animatorsList)
         {
             playerModel= _playerModel;
             playerView = GameObject.Instantiate(_playerPrefab);

@@ -1,6 +1,5 @@
 using FPHunter.Managers;
 using System.Collections;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace FPHunter.Player
@@ -110,7 +109,7 @@ namespace FPHunter.Player
             sniperCamera.enabled = _sniperCamera;
         }
 
-        public void SetPlayerAnimator(AnimatorController _animatorController)
+        public void SetPlayerAnimator(RuntimeAnimatorController _animatorController)
         {
             Animator.runtimeAnimatorController = _animatorController;
         }

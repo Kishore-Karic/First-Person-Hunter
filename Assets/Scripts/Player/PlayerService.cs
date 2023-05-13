@@ -3,7 +3,6 @@ using FPHunter.Enum;
 using FPHunter.Managers;
 using FPHunter.Weapon;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace FPHunter.Player
@@ -16,7 +15,7 @@ namespace FPHunter.Player
         [SerializeField] private List<Vector3> spawnPoints;
 
         [field: SerializeField] public BulletService BulletService { get; private set; }
-        [field: SerializeField] public List<AnimatorController> AnimatorsList { get; private set; }
+        [field: SerializeField] public List<RuntimeAnimatorController> AnimatorsList { get; private set; }
 
         private PlayerController playerController;
 
