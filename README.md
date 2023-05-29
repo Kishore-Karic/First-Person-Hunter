@@ -1,6 +1,6 @@
 # FPS Hunter
 A First Person Hunting Game this project is done in 4 days <br/>
-[Gameplay Trailer](https://drive.google.com/file/d/1Vhhb7mrCCugDs7jf23HPtuP8HPYdmymf/view?usp=share_link) <br/>
+[Gameplay Trailer](https://youtu.be/ifoNC3R2pf4) <br/>
 [Playable Link](https://kishore-karic.itch.io/fps-hunter) <br/>
 
 # Game Functionality
