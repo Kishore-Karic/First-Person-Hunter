@@ -6,8 +6,8 @@ A First Person Hunting Game this project is done in 4 days <br/>
 # Game Functionality
 1. 3 types of Weapon Single Pistol, Double Pistol and Sniper
 2. 4 types of Enemies for Hunting
-3. Player can choose thier Weapon and Enemy from Lobby
-4. Player can in to the world freely but movement speed will be reduced according to Weapon weight
+3. Player can choose their Weapon and Enemy from Lobby
+4. Player can move into the world freely, but movement speed will be reduced according to Weapon weight
 5. Enemy will Patrol until Player enters the range
 6. No health for Player if the Enemy reaches to Player will be Dead
 7. Different hit Areas can reduce different damage for Enemy
